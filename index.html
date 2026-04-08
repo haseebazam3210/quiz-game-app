@@ -1,39 +1,42 @@
 <!DOCTYPE html>
-<html lang="ur">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Advanced Quiz Game - متقدم کوئز گیم</title>
+    <title>Advanced Quiz Game - Learn & Win</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
+    <!-- Particle Background -->
+    <div id="particleContainer" class="particle-container"></div>
+
     <!-- Home Screen -->
     <div id="homeScreen" class="screen active">
         <div class="home-content">
-            <div class="logo">🎮 ADVANCED QUIZ GAME 🎮</div>
-            <h1>متقدم کوئز گیم</h1>
-            <p>سیکھیں، کھیلیں، جیتیں!</p>
+            <div class="logo">🎮 QUIZ MASTER 🎮</div>
+            <h1>Advanced Quiz Game</h1>
+            <p>Test Your Knowledge • Compete • Win Rewards!</p>
             
             <div class="button-group">
                 <button onclick="goToCategories()" class="btn btn-primary">
-                    <i class="fas fa-play"></i> کھیل شروع کریں
+                    <i class="fas fa-play"></i> Start Quiz
                 </button>
                 <button onclick="showLeaderboard()" class="btn btn-info">
-                    <i class="fas fa-trophy"></i> لیڈربورڈ
+                    <i class="fas fa-trophy"></i> Leaderboard
                 </button>
                 <button onclick="showSettings()" class="btn btn-settings">
-                    <i class="fas fa-cog"></i> سیٹنگز
+                    <i class="fas fa-cog"></i> Settings
                 </button>
             </div>
 
             <div class="stats-box">
                 <div class="stat">
-                    <span class="stat-label">کل کھیل:</span>
+                    <span class="stat-label">Total Quizzes:</span>
                     <span class="stat-value" id="totalGames">0</span>
                 </div>
                 <div class="stat">
-                    <span class="stat-label">بہترین اسکور:</span>
+                    <span class="stat-label">Best Score:</span>
                     <span class="stat-value" id="bestScore">0%</span>
                 </div>
             </div>
@@ -43,8 +46,8 @@
     <!-- Category Selection Screen -->
     <div id="categoryScreen" class="screen">
         <div class="header">
-            <button onclick="backToHome()" class="back-btn"><i class="fas fa-arrow-right"></i></button>
-            <h2>کیٹیگری منتخب کریں</h2>
+            <button onclick="backToHome()" class="back-btn"><i class="fas fa-arrow-left"></i></button>
+            <h2>Select a Category</h2>
         </div>
         <div class="category-grid" id="categoryGrid"></div>
     </div>
@@ -52,24 +55,24 @@
     <!-- Difficulty Selection Screen -->
     <div id="difficultyScreen" class="screen">
         <div class="header">
-            <button onclick="backToCategory()" class="back-btn"><i class="fas fa-arrow-right"></i></button>
-            <h2>مشکل سطح منتخب کریں</h2>
+            <button onclick="backToCategory()" class="back-btn"><i class="fas fa-arrow-left"></i></button>
+            <h2>Select Difficulty Level</h2>
         </div>
         <div class="difficulty-container">
             <div onclick="startQuiz('easy')" class="difficulty-card easy">
                 <div class="difficulty-icon">🟢</div>
-                <h3>آسان</h3>
-                <p>شروعات کریں</p>
+                <h3>Easy</h3>
+                <p>Beginner Level</p>
             </div>
             <div onclick="startQuiz('medium')" class="difficulty-card medium">
                 <div class="difficulty-icon">🟡</div>
-                <h3>درمیانی</h3>
-                <p>چیلنج</p>
+                <h3>Medium</h3>
+                <p>Intermediate</p>
             </div>
             <div onclick="startQuiz('hard')" class="difficulty-card hard">
                 <div class="difficulty-icon">🔴</div>
-                <h3>مشکل</h3>
-                <p>ماہرانہ</p>
+                <h3>Hard</h3>
+                <p>Expert Level</p>
             </div>
         </div>
     </div>
@@ -81,9 +84,9 @@
                 <span class="category-badge" id="categoryBadge"></span>
                 <span class="difficulty-badge" id="difficultyBadge"></span>
             </div>
-            <div class="timer">
+            <div class="timer" id="timerDisplay">
                 <i class="fas fa-hourglass-end"></i>
-                <span id="timerDisplay">30</span>s
+                <span id="timerValue">30</span>s
             </div>
             <div class="progress-bar">
                 <div class="progress-fill" id="progressFill"></div>
@@ -100,10 +103,10 @@
 
             <div class="quiz-actions">
                 <button onclick="skipQuestion()" class="btn-secondary">
-                    <i class="fas fa-forward"></i> اگے جائیں
+                    <i class="fas fa-forward"></i> Skip
                 </button>
                 <button id="nextBtn" onclick="nextQuestion()" disabled class="btn-primary">
-                    اگلا سوال <i class="fas fa-arrow-left"></i>
+                    Next <i class="fas fa-arrow-right"></i>
                 </button>
             </div>
         </div>
@@ -120,24 +123,24 @@
             <div class="score-card">
                 <div class="score-circle">
                     <div class="score-percentage" id="scorePercentage"></div>
-                    <div class="score-label">فیصد</div>
+                    <div class="score-label">Score</div>
                 </div>
 
                 <div class="score-details">
                     <div class="detail-item">
-                        <span class="detail-label">صحیح جوابات:</span>
+                        <span class="detail-label">Correct:</span>
                         <span class="detail-value" id="correctAnswers"></span>
                     </div>
                     <div class="detail-item">
-                        <span class="detail-label">غلط جوابات:</span>
+                        <span class="detail-label">Wrong:</span>
                         <span class="detail-value" id="wrongAnswers"></span>
                     </div>
                     <div class="detail-item">
-                        <span class="detail-label">اسکپ کیے:</span>
+                        <span class="detail-label">Skipped:</span>
                         <span class="detail-value" id="skippedAnswers"></span>
                     </div>
                     <div class="detail-item">
-                        <span class="detail-label">وقت لگا:</span>
+                        <span class="detail-label">Time Taken:</span>
                         <span class="detail-value" id="timeTaken"></span>
                     </div>
                 </div>
@@ -147,10 +150,10 @@
 
             <div class="button-group">
                 <button onclick="backToHome()" class="btn btn-primary">
-                    <i class="fas fa-home"></i> ہوم پر جائیں
+                    <i class="fas fa-home"></i> Home
                 </button>
                 <button onclick="goToCategories()" class="btn btn-secondary">
-                    <i class="fas fa-redo"></i> دوبارہ کھیلیں
+                    <i class="fas fa-redo"></i> Play Again
                 </button>
             </div>
         </div>
@@ -159,8 +162,8 @@
     <!-- Leaderboard Screen -->
     <div id="leaderboardScreen" class="screen">
         <div class="header">
-            <button onclick="backToHome()" class="back-btn"><i class="fas fa-arrow-right"></i></button>
-            <h2>🏆 لیڈربورڈ</h2>
+            <button onclick="backToHome()" class="back-btn"><i class="fas fa-arrow-left"></i></button>
+            <h2>🏆 Leaderboard</h2>
         </div>
         <div class="leaderboard-container">
             <div id="leaderboardContent" class="leaderboard-content"></div>
@@ -170,35 +173,35 @@
     <!-- Settings Screen -->
     <div id="settingsScreen" class="screen">
         <div class="header">
-            <button onclick="backToHome()" class="back-btn"><i class="fas fa-arrow-right"></i></button>
-            <h2>⚙️ سیٹنگز</h2>
+            <button onclick="backToHome()" class="back-btn"><i class="fas fa-arrow-left"></i></button>
+            <h2>⚙️ Settings</h2>
         </div>
         <div class="settings-container">
             <div class="setting-item">
                 <label>
                     <input type="checkbox" id="soundToggle" checked>
-                    <span>آواز</span>
+                    <span>Sound Effects</span>
                 </label>
             </div>
             <div class="setting-item">
                 <label>
                     <input type="checkbox" id="darkModeToggle">
-                    <span>رات کا موڈ</span>
+                    <span>Dark Mode</span>
                 </label>
             </div>
             <div class="setting-item">
                 <label>
-                    <span>سوالات کی تعداد:</span>
+                    <span>Questions Per Quiz:</span>
                     <select id="questionCount">
-                        <option value="5">5 سوالات</option>
-                        <option value="10" selected>10 سوالات</option>
-                        <option value="15">15 سوالات</option>
-                        <option value="20">20 سوالات</option>
+                        <option value="5">5 Questions</option>
+                        <option value="10" selected>10 Questions</option>
+                        <option value="15">15 Questions</option>
+                        <option value="20">20 Questions</option>
                     </select>
                 </label>
             </div>
             <button onclick="clearData()" class="btn btn-danger">
-                <i class="fas fa-trash"></i> ڈیٹا صاف کریں
+                <i class="fas fa-trash"></i> Clear All Data
             </button>
         </div>
     </div>
